@@ -56,7 +56,7 @@ export class HomeComponent implements OnInit {
         {
             key: "lastName",
             column: "Last name",
-            value: user => user.firstName
+            value: user => user.lastName
         },
         {
             key: "email",

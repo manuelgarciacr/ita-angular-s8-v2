@@ -8,6 +8,7 @@ import { noDragging } from 'src/utils/noDragging';
 import { ActivatedRoute, NavigationEnd, Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { routes } from 'src/app/app.routes';
 import { Subscription, filter } from 'rxjs';
+import { environment } from '../../../environments/environment';
 
 @Component({
     selector: "navbar",
@@ -24,6 +25,7 @@ import { Subscription, filter } from 'rxjs';
 })
 export class NavbarComponent implements OnInit, OnDestroy {
     protected isMenuCollapsed = true;
+    protected appVersion = environment.appVersion;
     links = routes.map(route => route.path).filter(r => r != "" && r != "**"); //["Home", "Map", "Full Calendar", "Graphics"];
     activeLink = this.links[0];
     private navigation$: Subscription;

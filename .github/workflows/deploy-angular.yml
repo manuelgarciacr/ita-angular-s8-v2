@@ -13,6 +13,7 @@ permissions:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
 
     steps:
       - name: Descargar el repositorio
@@ -48,6 +49,12 @@ jobs:
             "export const environment = " + JSON.stringify(env, null, 2) + ";\n"
           );
           '
+      - name: Ejecutar tests Jasmine/Karma
+        env:
+          CHROME_BIN: /usr/bin/google-chrome
+        run: |
+          google-chrome --version
+          npx ng test --watch=false --browsers=ChromeHeadless --progress=false
 
       - name: Compilar Angular para producción
         run: npm run build-prod
