@@ -103,11 +103,11 @@ jobs:
 
       - name: Verificar conexión SSH
         run: |
-          ssh -o BatchMode=yes -o IdentitiesOnly=yes -i "$HOME/.ssh/id_ed25519" deploy-angular@10.8.0.1 'whoami'
+          ssh -o BatchMode=yes -o IdentitiesOnly=yes -i "$HOME/.ssh/id_ed25519" webdeploy@10.8.0.1 'whoami'
 
       - name: Desplegar Angular
         run: |
           rsync -az --delete \
             -e "ssh -o BatchMode=yes -o IdentitiesOnly=yes -i $HOME/.ssh/id_ed25519" \
             dist/ita-angular-s8-v2/ \
-            deploy-angular@10.8.0.1:/var/www/html/ita-angular-s8-v2/
+            webdeploy@10.8.0.1:/var/www/html/ita-angular-s8-v2/
