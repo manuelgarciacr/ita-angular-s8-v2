@@ -35,17 +35,23 @@ jobs:
         run: |
           node -e '
           const fs = require("node:fs");
+          const appVersion = require("./package.json").version;
           const env = {
             production: true,
+            appVersion,
             url: process.env.ANGULAR_API_URL,
             mapboxToken: process.env.ANGULAR_MAPBOX_TOKEN
           };
-          if (!env.url || !env.mapboxToken) {
-            console.error("Falta configurar ANGULAR_API_URL o ANGULAR_MAPBOX_TOKEN");
+          if (!env.appVersion || !env.url || !env.mapboxToken) {
+            console.error("Falta configurar appVersion, ANGULAR_API_URL o ANGULAR_MAPBOX_TOKEN");
             process.exit(1);
           }
           fs.writeFileSync(
             "src/environments/environment.prod.ts",
+            "export const environment = " + JSON.stringify(env, null, 2) + ";\n"
+          );
+          fs.writeFileSync(
+            "src/environments/environment.ts",
             "export const environment = " + JSON.stringify(env, null, 2) + ";\n"
           );
           '
@@ -85,6 +91,15 @@ jobs:
           chmod 600 "$HOME/.ssh/id_ed25519"
           printf '%s\n' '10.8.0.1 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHzMwCa/GcWW2CU7FTt1XRjQWGP31eeajZ6DwqLA5dRi' > "$HOME/.ssh/known_hosts"
           chmod 600 "$HOME/.ssh/known_hosts"
+
+      - name: Debug clave
+        run: |
+            echo "Líneas: $(wc -l < "$HOME/.ssh/id_ed25519")"
+            echo "Fingerprint:"
+            ssh-keygen -l -f "$HOME/.ssh/id_ed25519" 2>&1 || echo "❌ CLAVE INVÁLIDA"
+            echo "Últimos bytes:"
+            tail -c 30 "$HOME/.ssh/id_ed25519" | xxd
+        shell: bash
 
       - name: Verificar conexión SSH
         run: |

@@ -1,6 +1,6 @@
 import { Injectable, inject } from "@angular/core";
 import { IDataAdapter, Params } from "../adapters/IDataAdapter";
-import { environment } from "src/environments/environment";
+import { environment } from "../../environments/environment";
 import { HttpAdapter } from "../adapters/HttpAdapter";
 import { IUser } from "../../domain/model/IUser";
 
